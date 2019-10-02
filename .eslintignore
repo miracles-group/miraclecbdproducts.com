@@ -1,0 +1,7 @@
+.git
+/build
+/node_modules
+/src/db/
+/src/style/
+/android
+/ios
