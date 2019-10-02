@@ -62,8 +62,13 @@ const ResponsiveDrawer = props => {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar}>
-        <img className="logo" src="https://miraclecbdproducts.com/images/cbd-logo.png" alt="logo" />
+      <div className={`img-wapper ${classes.toolbar}`}>
+        <img
+          className="logo"
+          src="https://miraclecbdproducts.com/images/cbd-logo.png"
+          width="120"
+          alt="logo"
+        />
       </div>
       <List>
         {['Products'].map((text, index) => (
