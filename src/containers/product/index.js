@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
-import { Add } from '@material-ui/icons';
+import { Sync } from '@material-ui/icons';
 import { productActions } from '../../store/actions';
 import { connect } from 'react-redux';
 
@@ -38,24 +38,22 @@ class Product extends React.Component {
 
   addProduct = product => {
     const item = {
-      product: {
-        title: product.name,
-        body_html: product.description,
-        vendor: product.slug,
-        product_type: product.category,
-        tags: product.sub_category,
-        variants: [
-          {
-            price: product.price,
-            sku: product.mg_of_cbd
-          }
-        ],
-        images: [
-          {
-            src: product.image_path
-          }
-        ]
-      }
+      title: product.name,
+      body_html: product.description,
+      vendor: product.slug,
+      product_type: product.category,
+      tags: product.sub_category,
+      variants: [
+        {
+          price: product.price,
+          sku: product.mg_of_cbd
+        }
+      ],
+      images: [
+        {
+          src: product.image_path
+        }
+      ]
     };
     this.props.addProduct(item);
   };
@@ -85,7 +83,7 @@ class Product extends React.Component {
                     <TableCell align="left">{value.sub_category}</TableCell>
                     <TableCell align="left">{value.price}</TableCell>
                     <TableCell value={value}>
-                      <Add onClick={() => this.addProduct(value)}></Add>
+                      <Sync className="add" onClick={() => this.addProduct(value)}></Sync>
                     </TableCell>
                   </TableRow>
                 );
