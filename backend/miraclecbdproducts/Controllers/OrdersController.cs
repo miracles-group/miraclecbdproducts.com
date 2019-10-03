@@ -55,6 +55,17 @@ namespace MiraclecBDProducts.Controllers
                 Status = 200,
                 Message = string.Empty
             };
+            SyncOrderAsync(shopifyorder);
+            return rs;
+        }
+
+        public async void SyncOrderAsync(Order shopifyorder)
+        {
+            var rs = new ResponseModel()
+            {
+                Status = 200,
+                Message = string.Empty
+            };
             using (var httpClient = new HttpClient())
             {
                 var url = _config.GetValue<string>("miraclecbdproducts:Url");
@@ -70,8 +81,8 @@ namespace MiraclecBDProducts.Controllers
                     var client = new HttpClient
                     {
                         BaseAddress = new Uri(url)
-                    }; 
-                     var phone = !string.IsNullOrEmpty(shopifyorder.Phone) ? shopifyorder.Phone : "0123456789";
+                    };
+                    var phone = !string.IsNullOrEmpty(shopifyorder.Phone) ? shopifyorder.Phone : "0123456789";
                     if (shopifyorder.BillingAddress != null)
                     {
 
@@ -137,7 +148,7 @@ namespace MiraclecBDProducts.Controllers
                             });
                         }
                     }
-                    if(order.products.Count() == 0)
+                    if (order.products.Count() == 0)
                     {
                         rs.Status = 500;
                         rs.Message = "Order does not have any product";
@@ -157,12 +168,12 @@ namespace MiraclecBDProducts.Controllers
                     rs.Status = 500;
                     rs.Message = ex.Message;
                 }
-                using(var db = new MiraclesContext())
+                using (var db = new MiraclesContext())
                 {
                     var inputData = JsonConvert.SerializeObject(shopifyorder);
-                    var miraclesData = JsonConvert.SerializeObject(order); 
+                    var miraclesData = JsonConvert.SerializeObject(order);
                     var message = "Status: " + rs.Status + "; Message: " + rs.Message;
-                    if(rs.Status != 200)
+                    if (rs.Status != 200)
                     {
                         message += "; Input Data: " + inputData;
                         message += "; Miracles Data: " + miraclesData;
@@ -176,7 +187,6 @@ namespace MiraclecBDProducts.Controllers
                     db.SaveChanges();
                 }
             }
-            return rs;
         }
 
         private long GetMiraclesID(long shopifyID)
