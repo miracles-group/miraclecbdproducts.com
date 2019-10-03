@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using MiraclecBDProducts.Models;
 using ShopifySharp;
 
-namespace shopify.Controllers
+namespace MiraclecBDProducts.Controllers
 {
     [EnableCors("AllowAllHeaders")]
     [Route("api/[controller]")]

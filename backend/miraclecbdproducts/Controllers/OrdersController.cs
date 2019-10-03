@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MiraclecBDProducts.Models;
 using Newtonsoft.Json;
 using ShopifySharp;
 
-namespace shopify.Controllers
+namespace MiraclecBDProducts.Controllers
 {
     [EnableCors("AllowAllHeaders")]
     [Route("api/[controller]")]
