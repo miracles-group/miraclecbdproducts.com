@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAB7AOE2hliUaIVD+2tHmfNQAAAAACAAAAAAAQZgAAAAEAACAAAADi9kQ6A/qlCNgwwQDYuoX0vj3rr44UpxedBurA5CSZWgAAAAAOgAAAAAIAACAAAAAoJrqOjO6Iu67Kd12NCJ9+UQd/Lmm0Lt5OnZ08FzCRLiAAAAA/7Qgg3NtdL6pcgzygTLf5zzANuxxhayNQGTkuMZLrb0AAAADxyZkYzTWpp8YZNO+gXp7AELRX4msnU9jYK7LMVPKtoPpN5Mos4tEz2VUesadxAsBZGQUmKoLAKssjoQIjAPyw</EncryptedPassword>
+    <_PublishTargetUrl>ftp://ftp.site4now.net/shopify</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>10/02/2019 18:50:19</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>10/02/2019 19:21:22</publishTime>
+    </File>
+    <File Include="Serilog.dll">
+      <publishTime>06/20/2017 17:25:26</publishTime>
+    </File>
+    <File Include="Serilog.Extensions.Logging.dll">
+      <publishTime>02/14/2017 22:04:42</publishTime>
+    </File>
+    <File Include="Serilog.Extensions.Logging.File.dll">
+      <publishTime>07/06/2017 16:01:20</publishTime>
+    </File>
+    <File Include="Serilog.Formatting.Compact.dll">
+      <publishTime>07/05/2016 02:28:44</publishTime>
+    </File>
+    <File Include="Serilog.Sinks.Async.dll">
+      <publishTime>06/26/2017 22:28:16</publishTime>
+    </File>
+    <File Include="Serilog.Sinks.File.dll">
+      <publishTime>01/03/2017 02:29:38</publishTime>
+    </File>
+    <File Include="Serilog.Sinks.RollingFile.dll">
+      <publishTime>01/03/2017 03:05:26</publishTime>
+    </File>
+    <File Include="shopify.deps.json">
+      <publishTime>10/02/2019 22:40:36</publishTime>
+    </File>
+    <File Include="shopify.dll">
+      <publishTime>10/02/2019 22:40:03</publishTime>
+    </File>
+    <File Include="shopify.pdb">
+      <publishTime>10/02/2019 22:40:03</publishTime>
+    </File>
+    <File Include="shopify.runtimeconfig.json">
+      <publishTime>10/02/2019 22:40:37</publishTime>
+    </File>
+    <File Include="ShopifySharp.dll">
+      <publishTime>09/18/2019 23:10:40</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>10/02/2019 22:40:37</publishTime>
+    </File>
+  </ItemGroup>
+</Project>
