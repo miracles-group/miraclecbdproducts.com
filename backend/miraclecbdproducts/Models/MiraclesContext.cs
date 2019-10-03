@@ -16,6 +16,7 @@ namespace MiraclecBDProducts.Models
         }
 
         public virtual DbSet<MappingOrder> MappingOrder { get; set; }
+        public virtual DbSet<TblAuditLog> TblAuditLog { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,6 +38,15 @@ namespace MiraclecBDProducts.Models
                 entity.Property(e => e.ShopifyId).HasColumnName("ShopifyID");
 
                 entity.Property(e => e.MiraclesId).HasColumnName("MiraclesID");
+            });
+
+            modelBuilder.Entity<TblAuditLog>(entity =>
+            {
+                entity.ToTable("tblAuditLog");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             });
         }
     }
