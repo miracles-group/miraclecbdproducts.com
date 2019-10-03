@@ -10,7 +10,7 @@ export const getProduct = () => {
 
 export const createProduct = params => {
   return axios({
-    url: 'http://shopify.miracles.vn/api/products',
+    url: 'https://shopify.miracles.vn/api/products',
     method: 'POST',
     data: params
   });
