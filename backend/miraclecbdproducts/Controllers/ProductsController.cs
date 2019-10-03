@@ -41,22 +41,61 @@ namespace MiraclecBDProducts.Controllers
         [HttpPost]
         public async Task<ResponseModel> Post([FromBody] Product product)
         {
-            var rs = new ResponseModel() {
+            var rs = new ResponseModel()
+            {
                 Status = 200,
                 Message = string.Empty
             };
             try
             {
-                var myShopifyUrl = _config.GetValue<string>("Shopify:Url");
-                var privateAppPassword = _config.GetValue<string>("Shopify:PrivateAppPassword");
-                var service = new ProductService(myShopifyUrl, privateAppPassword);
-                if(string.IsNullOrEmpty(product.Title))
+                using (var db = new MiraclesContext())
                 {
-                    rs.Status = 500;
-                    rs.Message = "Title is required";
-                    return rs;
+                    var myShopifyUrl = _config.GetValue<string>("Shopify:Url");
+                    var privateAppPassword = _config.GetValue<string>("Shopify:PrivateAppPassword");
+                    var service = new ProductService(myShopifyUrl, privateAppPassword);
+                    if (!product.Id.HasValue)
+                    {
+                        rs.Status = 500;
+                        rs.Message = "Product ID is required";
+                        return rs;
+                    }
+                    if (string.IsNullOrEmpty(product.Title))
+                    {
+                        rs.Status = 500;
+                        rs.Message = "Title is required";
+                        return rs;
+                    }
+                    long miraclesID = product.Id.Value;
+                    var item = db.MappingOrder.FirstOrDefault(o => o.MiraclesId == miraclesID);
+                    var shopifyProduct = new Product();
+                    if (item != null)
+                    {
+                        shopifyProduct = await service.UpdateAsync(item.ShopifyId, product);
+                        
+                    }
+                    else
+                    {
+                        shopifyProduct = await service.CreateAsync(product);
+                    }
+                    
+                    if (!shopifyProduct.Id.HasValue)
+                    {
+                        rs.Status = 500;
+                        rs.Message = "Can not detect product ID from Shopify. Value: " + shopifyProduct.Id;
+                        return rs;
+                    }
+
+                    var shopifyID = shopifyProduct.Id.Value;
+                    if(item == null)
+                    {
+                        db.MappingOrder.Add(new MappingOrder()
+                        {
+                            MiraclesId = miraclesID,
+                            ShopifyId = shopifyID
+                        });
+                    }
+                    db.SaveChanges();
                 }
-                var createResult = await service.CreateAsync(product);
                 rs.Data = product;
             }
             catch (Exception ex)
