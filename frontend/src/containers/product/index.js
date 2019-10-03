@@ -38,6 +38,7 @@ class Product extends React.Component {
 
   addProduct = product => {
     const item = {
+      id: product.id,
       title: product.name,
       body_html: product.description,
       vendor: product.slug,
