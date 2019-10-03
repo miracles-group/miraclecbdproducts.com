@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:62267",
+      "applicationUrl": "http://localhost:51729",
       "sslPort": 0
     }
   },
@@ -12,15 +12,15 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/products",
+      "launchUrl": "api/start",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "shopify": {
+    "MiraclecBDProducts": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/products",
+      "launchUrl": "api/start",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
