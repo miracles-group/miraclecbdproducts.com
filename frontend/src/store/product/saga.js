@@ -24,7 +24,7 @@ export function* createProductSaga() {
         new Noty({
           type: 'success',
           layout: 'topRight',
-          text: 'Sync Successful',
+          text: 'Sync Successfully ',
           timeout: 3000
         }).show();
       } else {
