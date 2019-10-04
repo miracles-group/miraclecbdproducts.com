@@ -16,13 +16,14 @@ namespace MiraclecBDProducts.Models
         }
 
         public virtual DbSet<MappingOrder> MappingOrder { get; set; }
+        public virtual DbSet<Setting> Setting { get; set; }
         public virtual DbSet<TblAuditLog> TblAuditLog { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+
                 optionsBuilder.UseSqlServer("Server=sql5045.site4now.net;Integrated Security=False;Database=DB_9A9CCA_shopify;User ID=DB_9A9CCA_shopify_admin;Password=Vbn*34295;MultipleActiveResultSets=True");
             }
         }
@@ -38,6 +39,12 @@ namespace MiraclecBDProducts.Models
                 entity.Property(e => e.ShopifyId).HasColumnName("ShopifyID");
 
                 entity.Property(e => e.MiraclesId).HasColumnName("MiraclesID");
+            });
+
+            modelBuilder.Entity<Setting>(entity =>
+            {
+                entity.HasKey(e => e.AutoSyncProduct)
+                    .HasName("PK__Setting__4E2DDB0B94EEB60D");
             });
 
             modelBuilder.Entity<TblAuditLog>(entity =>
