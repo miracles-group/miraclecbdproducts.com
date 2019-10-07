@@ -11,18 +11,15 @@ using ShopifySharp;
 
 namespace MiraclecBDProducts.Controllers
 {
-        [AllowAnonymous]
-        [EnableCors("AllowAllHeaders")]
-        [Route("api/setting")]
-        [ApiController]
-       public class SettingController : ControllerBase
+    [AllowAnonymous]
+    [EnableCors("AllowAllHeaders")]
+    [Route("api/setting")]
+    [ApiController]
+    public class SettingController : ControllerBase
     {
-        private readonly IConfiguration _config;
-        private MiraclesContext _miraclesContext;
 
-        public SettingController (IConfiguration config)
+        public SettingController()
         {
-            _config = config;
         }
 
         [DisableCors]
@@ -49,8 +46,8 @@ namespace MiraclecBDProducts.Controllers
                         {
                             AutoSyncProduct = _setting.AutoSyncProduct
                         };
+                        db.Setting.Add(setting);
                     }
-                    db.Update(setting);
                     db.SaveChanges();
                     rs.Data = setting;
                 }
@@ -64,16 +61,17 @@ namespace MiraclecBDProducts.Controllers
         }
         [DisableCors]
         [HttpGet]
-        public List<Setting> Get()
+        public Setting Get()
         {
-            var db = new MiraclesContext();
-            var rs = db.Setting.Where( o => o.AutoSyncProduct != null).ToList();
-            return rs;
-
+            using (var db = new MiraclesContext())
+            {
+                var rs = db.Setting.FirstOrDefault();
+                return rs;
+            }
         }
-        
-           
-                
+
+
+
     }
 
 }
