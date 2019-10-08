@@ -18,6 +18,7 @@ namespace MiraclecBDProducts.Models
         public virtual DbSet<MappingOrder> MappingOrder { get; set; }
         public virtual DbSet<Setting> Setting { get; set; }
         public virtual DbSet<TblAuditLog> TblAuditLog { get; set; }
+        public virtual DbSet<TblUser> TblUser { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,6 +49,21 @@ namespace MiraclecBDProducts.Models
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblUser>(entity =>
+            {
+                entity.HasKey(e => e.UserName);
+
+                entity.ToTable("tblUser");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(50)
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Password).HasMaxLength(150);
+
+                entity.Property(e => e.Token).HasMaxLength(500);
             });
         }
     }
