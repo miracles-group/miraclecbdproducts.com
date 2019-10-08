@@ -57,14 +57,14 @@ namespace MiraclecBDProducts.Controllers
                     {
                         Status = 200,
                         Data = tokenString,
-                        Message = "login sucessful"
+                        Message = "Login successfully"
                     };
                 }
             }
             return new ResponseModel()
             {
                 Status = 200,
-                Message = "login failed"
+                Message = "Login failed"
             };      
         }
     }
