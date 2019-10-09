@@ -5,15 +5,16 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LocalMallIcon from '@material-ui/icons/LocalMall';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import history from '../../utils/history';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 const drawerWidth = 220;
@@ -60,6 +61,11 @@ const ResponsiveDrawer = props => {
     setMobileOpen(!mobileOpen);
   };
 
+  const logOut = () => {
+    localStorage.clear();
+    history.push('/login');
+  };
+
   const drawer = (
     <div>
       <div className={`img-wapper ${classes.toolbar}`}>
@@ -71,12 +77,18 @@ const ResponsiveDrawer = props => {
         />
       </div>
       <List>
-        {['Products'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button>
+          <ListItemIcon>
+            <LocalMallIcon />
+          </ListItemIcon>
+          <ListItemText primary="Products" />
+        </ListItem>
+        <ListItem button onClick={logOut}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </ListItem>
       </List>
     </div>
   );

@@ -1,0 +1,16 @@
+.form-wapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 64px;
+  .form {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .submit {
+    margin: 24px 0px 16px;
+  }
+  .avatar {
+    margin: 8px;
+  }
+}

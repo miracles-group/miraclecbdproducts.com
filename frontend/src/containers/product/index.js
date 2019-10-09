@@ -6,6 +6,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
+import Checkbox from '@material-ui/core/Checkbox';
+import Noty from 'noty';
+import Loader from 'react-loader-spinner';
 import { Sync } from '@material-ui/icons';
 import { productActions } from '../../store/actions';
 import { connect } from 'react-redux';
@@ -15,12 +18,15 @@ class Product extends React.Component {
     super(props);
     this.state = {
       page: 0,
-      rowsPerPage: 20
+      rowsPerPage: 20,
+      autoSyncProduct: false,
+      loading: true
     };
   }
 
   componentDidMount() {
-    this.props.getProduct();
+    // this.props.getSetting();
+    this.props.getProduct(this.onload);
   }
 
   handleChangePage = (event, newPage) => {
@@ -34,6 +40,33 @@ class Product extends React.Component {
       rowsPerPage: +event.target.value,
       page: 0
     });
+  };
+
+  onload = () => {
+    this.setState({
+      loading: false
+    });
+  };
+
+  onSuccess = () => {
+    new Noty({
+      type: 'success',
+      layout: 'topRight',
+      text: 'Successfully ',
+      timeout: 3000
+    }).show();
+  };
+
+  onFail = err => {
+    new Noty({
+      type: 'error',
+      layout: 'topRight',
+      text: err,
+      timeout: 3000
+    }).show();
+  };
+  changeSync = e => {
+    this.props.setting({ autoSyncProduct: e.target.checked }, this.onSuccess, this.onFail);
   };
 
   addProduct = product => {
@@ -56,70 +89,99 @@ class Product extends React.Component {
         }
       ]
     };
-    this.props.addProduct(item);
+    this.props.addProduct(item, this.onSuccess, this.onFail);
   };
 
   render() {
-    const { page, rowsPerPage } = this.state;
+    const { page, rowsPerPage, loading } = this.state;
     return (
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">#</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Category</TableCell>
-              <TableCell align="left">Price</TableCell>
-              <TableCell align="left">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.props.product
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((value, index) => {
-                return (
-                  <TableRow key={index}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell align="left">{value.name}</TableCell>
-                    <TableCell align="left">{value.sub_category}</TableCell>
-                    <TableCell align="left">{value.price}</TableCell>
-                    <TableCell value={value}>
-                      <Sync className="add" onClick={() => this.addProduct(value)}></Sync>
-                    </TableCell>
+      <React.Fragment>
+        {!loading && (
+          <div className="main">
+            <div className="wapper-check">
+              <Checkbox
+                checked={this.props.autoSyncProduct}
+                color="primary"
+                onChange={e => this.changeSync(e)}
+                inputProps={{
+                  'aria-label': 'secondary checkbox'
+                }}
+              />
+              <span>Automatically sync after 30 days</span>
+            </div>
+            <Paper>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">#</TableCell>
+                    <TableCell align="left">Name</TableCell>
+                    <TableCell align="left">Category</TableCell>
+                    <TableCell align="left">Price</TableCell>
+                    <TableCell align="left">Actions</TableCell>
                   </TableRow>
-                );
-              })}
-          </TableBody>
-        </Table>
-        <TablePagination
-          component="div"
-          rowsPerPageOptions={[10, 20, 30]}
-          count={this.props.product.length}
-          rowsPerPage={this.state.rowsPerPage}
-          page={this.state.page}
-          backIconButtonProps={{
-            'aria-label': 'previous page'
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'next page'
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                </TableHead>
+                <TableBody>
+                  {this.props.product
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((value, index) => {
+                      return (
+                        <TableRow key={index}>
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell align="left">{value.name}</TableCell>
+                          <TableCell align="left">{value.sub_category}</TableCell>
+                          <TableCell align="left">{value.price}</TableCell>
+                          <TableCell value={value}>
+                            <Sync className="add" onClick={() => this.addProduct(value)}></Sync>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+              <TablePagination
+                component="div"
+                rowsPerPageOptions={[10, 20, 30]}
+                count={this.props.product.length}
+                rowsPerPage={this.state.rowsPerPage}
+                page={this.state.page}
+                backIconButtonProps={{
+                  'aria-label': 'previous page'
+                }}
+                nextIconButtonProps={{
+                  'aria-label': 'next page'
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </Paper>
+          </div>
+        )}
+
+        <Loader
+          className="loading"
+          type="TailSpin"
+          height={50}
+          width={50}
+          color="#203e7d"
+          visible={loading}
         />
-      </Paper>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    product: state.product.listProduct
+    product: state.product.listProduct,
+    autoSyncProduct: state.product.autoSyncProduct
   };
 };
 
 const mapDispatchToProps = {
   getProduct: productActions.getProduct,
-  addProduct: productActions.addProduct
+  addProduct: productActions.addProduct,
+  getSetting: productActions.getSetting,
+  setting: productActions.setting
 };
 
 export default connect(

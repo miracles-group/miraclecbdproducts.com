@@ -2,16 +2,31 @@ import request from '../utils/request';
 import axios from 'axios';
 
 export const getProduct = () => {
-  return request({
-    url: `/product/?username=phamminh1309`,
+  return axios({
+    url: `https://miraclecbdproducts.com/api/product/?username=phamminh1309`,
     method: 'GET'
   });
 };
 
 export const createProduct = params => {
-  return axios({
-    url: 'https://shopify.miracles.vn/api/products',
+  return request({
+    url: '/products',
     method: 'POST',
     data: params
+  });
+};
+
+export const setting = params => {
+  return request({
+    url: '/setting',
+    method: 'POST',
+    data: params
+  });
+};
+
+export const getSetting = () => {
+  return request({
+    url: '/setting',
+    method: 'GET'
   });
 };

@@ -1,7 +1,8 @@
 import actions from './actions';
 
 const initialState = {
-  listProduct: []
+  listProduct: [],
+  autoSyncProduct: false
 };
 
 const Product = (state = initialState, action) => {
@@ -10,6 +11,16 @@ const Product = (state = initialState, action) => {
       return {
         ...state,
         listProduct: action.data
+      };
+    case actions.GET_SETTING_SUCCESS:
+      return {
+        ...state,
+        autoSyncProduct: action.data
+      };
+    case actions.SETTING_SUCCESS:
+      return {
+        ...state,
+        autoSyncProduct: action.data
       };
     default:
       return state;
