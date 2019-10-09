@@ -63,7 +63,7 @@ namespace MiraclecBDProducts.Controllers
             }
             return new ResponseModel()
             {
-                Status = 200,
+                Status = 400,
                 Message = "Login failed"
             };      
         }
