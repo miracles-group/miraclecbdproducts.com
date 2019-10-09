@@ -16,6 +16,7 @@ namespace MiraclecBDProducts.Models
         }
 
         public virtual DbSet<MappingOrder> MappingOrder { get; set; }
+        public virtual DbSet<Setting> Setting { get; set; }
         public virtual DbSet<TblAuditLog> TblAuditLog { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

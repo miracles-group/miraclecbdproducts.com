@@ -23,7 +23,6 @@ namespace MiraclecBDProducts.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=sql5045.site4now.net;Integrated Security=False;Database=DB_9A9CCA_scantx;User ID=DB_9A9CCA_scantx_admin;Password=Vbn*34295;MultipleActiveResultSets=True");
             }
         }
