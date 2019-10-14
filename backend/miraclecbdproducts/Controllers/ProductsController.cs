@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MiraclecBDProducts.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ShopifySharp;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using MiraclecBDProducts.Services;
 
 namespace MiraclecBDProducts.Controllers
@@ -66,10 +69,9 @@ namespace MiraclecBDProducts.Controllers
             {
                 var shopifyProduct = new Product {
                     Id = product.Id,
-                    Title = product.Description,
+                    Title = product.Name,
+                    BodyHtml = product.Description,
                     CreatedAt= DateTime.UtcNow.Date,
-                    Vendor = product.Catelogy,
-                    
                 };
                 var rs = await ProductServices.AddProduct(shopifyProduct, myShopifyUrl, privateAppPassword);
             }
@@ -79,7 +81,6 @@ namespace MiraclecBDProducts.Controllers
         [HttpGet("autosync")]
         public async Task<ResponseModel> AutoAsyncMiraclesProduct()
         {
-          
             using (var db = new MiraclesContext())
             {
                 try
