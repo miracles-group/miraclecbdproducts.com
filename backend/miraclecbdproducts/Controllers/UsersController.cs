@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -47,7 +48,7 @@ namespace MiraclecBDProducts.Controllers
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserName.ToString())
                 }),
-                        Expires = DateTime.UtcNow.AddDays(7),
+                        Expires = DateTime.UtcNow.AddDays(7000),
                     };
                     var token = tokenHandler.CreateToken(tokenDescriptor);
                     var tokenString = tokenHandler.WriteToken(token);
@@ -66,6 +67,52 @@ namespace MiraclecBDProducts.Controllers
                 Status = 400,
                 Message = "Login failed"
             };      
+        }
+        [DisableCors]
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public ResponseModel InsertUser([FromBody]UserDto _userDto)
+        {
+            var rs = new ResponseModel()
+            {
+                Status = 200,
+                Message = "Company account was created."
+            };
+            try
+            {
+                using (var db = new MiraclesContext())
+                {
+                   
+                        db.TblUser.Add(new TblUser
+                        {
+                          
+                            UserName = _userDto.Username,
+                            Password = _userDto.Password,
+                        });
+                  
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                rs.Status = 500;
+                rs.Message = "error: " + ex.Message;
+            }
+
+            return rs;
+
+        }
+        
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
     }
 }
