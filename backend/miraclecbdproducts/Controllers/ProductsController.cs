@@ -13,6 +13,7 @@ using ShopifySharp;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using MiraclecBDProducts.Services;
+using MiraclecBDProducts.Dto;
 
 namespace MiraclecBDProducts.Controllers
 {
@@ -72,6 +73,7 @@ namespace MiraclecBDProducts.Controllers
                     Title = product.Name,
                     BodyHtml = product.Description,
                     CreatedAt= DateTime.UtcNow.Date,
+                    
                 };
                 var rs = await ProductServices.AddProduct(shopifyProduct, myShopifyUrl, privateAppPassword);
             }
@@ -124,6 +126,47 @@ namespace MiraclecBDProducts.Controllers
                     };
                 }
             }
+        }
+        [HttpPatch("{id}")]
+        public async Task<ResponseModel> UpdateProduct(int id, [FromBody]ProductDto productDto)
+        {
+            var rs = new ResponseModel()
+            {
+                Status = 200,
+                Message = "Product was updated."
+            };
+            try
+            {
+                using (var db = new MiraclesContext())
+                {
+                    var myShopifyUrl = _config.GetValue<string>("Shopify:Url");
+                    var privateAppPassword = _config.GetValue<string>("Shopify:PrivateAppPassword");
+                    var service = new ProductService(myShopifyUrl, privateAppPassword);
+                    var item = db.MappingOrder.FirstOrDefault(o => o.MiraclesId == id);
+
+                    if (item == null)
+                    {
+                        rs.Status = 400;
+                        rs.Message = "Dont have Product you want to update.";
+                        return rs;
+                    }
+                    else
+                    {
+                       
+                            
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                rs.Status = 500;
+                rs.Message = "error: " + ex.Message;
+            }
+
+            return rs;
+
         }
 
         // PUT api/values/5

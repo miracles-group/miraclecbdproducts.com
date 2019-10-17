@@ -83,6 +83,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/15/2018 13:29:34</publishTime>
     </File>
     <File Include="MiraclecBDProducts.deps.json">
+<<<<<<< Updated upstream
       <publishTime>10/14/2019 16:51:44</publishTime>
     </File>
     <File Include="MiraclecBDProducts.dll">
@@ -90,9 +91,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="MiraclecBDProducts.pdb">
       <publishTime>10/14/2019 16:49:56</publishTime>
+=======
+      <publishTime>10/16/2019 00:52:53</publishTime>
+    </File>
+    <File Include="MiraclecBDProducts.dll">
+      <publishTime>10/16/2019 00:52:45</publishTime>
+    </File>
+    <File Include="MiraclecBDProducts.pdb">
+      <publishTime>10/16/2019 00:52:45</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="MiraclecBDProducts.runtimeconfig.json">
-      <publishTime>10/08/2019 21:27:46</publishTime>
+      <publishTime>10/16/2019 00:52:45</publishTime>
     </File>
     <File Include="NuGet.Frameworks.dll">
       <publishTime>04/24/2018 21:27:10</publishTime>
@@ -149,7 +159,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/04/2019 13:02:10</publishTime>
     </File>
     <File Include="web.config">
+<<<<<<< Updated upstream
       <publishTime>10/14/2019 16:51:44</publishTime>
+=======
+      <publishTime>10/16/2019 00:52:53</publishTime>
+>>>>>>> Stashed changes
     </File>
   </ItemGroup>
 </Project>

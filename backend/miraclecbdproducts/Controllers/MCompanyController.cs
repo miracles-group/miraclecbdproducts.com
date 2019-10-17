@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using ServiceStack.Text;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using MiraclecBDProducts.Helpers;
 
 namespace MiraclecBDProducts.Controllers
 {
@@ -32,32 +33,32 @@ namespace MiraclecBDProducts.Controllers
         {
 
         }
-        [DisableCors]
-        [HttpPost]
+        
 
-        public async Task<string> PostURI([FromBody]CompanyDto _companyDto)
+        public async Task<string> PostURI([FromBody]CompanyDto companyDto)
         {
             Uri u = new Uri("http://staging.miraclecbdproducts.com/api/company");
             try
             {
                 using (var client = new HttpClient())
                 {
+
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     
 
                         HttpContent content = new StringContent(
-                        JsonConvert.SerializeObject(_companyDto),
+                        JsonConvert.SerializeObject(companyDto),
                         Encoding.UTF8,
                         "application/json"
                     );
-                    HttpResponseMessage response = await client.PostAsync(u, content);
+                    HttpResponseMessage response = await client.PostAsJsonAsync(u, content);
                     if (!response.IsSuccessStatusCode)
                     {
                         return string.Empty;
                     }
                     var jsonResponse = await response.Content.ReadAsStringAsync();
-                    return "";
+                    return jsonResponse;
                 }
             }
             catch (Exception ex)
@@ -65,19 +66,31 @@ namespace MiraclecBDProducts.Controllers
                 return "error: " + ex.Message;
             }
         }
-      
-        public async Task<String> UriPost([FromBody]string s)
+        [DisableCors]
+        [HttpPost]
+        public async Task<string> UriPost([FromBody]CompanyDto companyDto)
         {
-            string Login_URL1 = "http://staging.miraclecbdproducts.com/api/company";
-            string Login_Data1 = "";
+            
             using (var client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var Pay_Load1 = new StringContent(Login_Data1, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(Login_URL1, Pay_Load1);
+                var request = new
+                {
+                    Url = "http://staging.miraclecbdproducts.com/api/company",
+                    Body = new
+                    {
+                        contact_person = companyDto.Contact_Person,
+                        name = companyDto.Name,
+                        phone_number = companyDto.Phone_Number,
+                        email_address = companyDto.Email_Address,
+                        username = companyDto.Username,
+                        password = companyDto.Password
 
-                return await response.Content.ReadAsStringAsync();
+                    }
+                };
+                var response = await client.PostAsJsonAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+                var value = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+
+                return response.EnsureSuccessStatusCode().ToString();
             }
         }
 
