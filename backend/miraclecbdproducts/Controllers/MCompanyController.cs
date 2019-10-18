@@ -33,8 +33,9 @@ namespace MiraclecBDProducts.Controllers
         {
 
         }
-        
 
+        [DisableCors]
+        [HttpPost]
         public async Task<string> PostURI([FromBody]CompanyDto companyDto)
         {
             Uri u = new Uri("http://staging.miraclecbdproducts.com/api/company");
@@ -66,33 +67,32 @@ namespace MiraclecBDProducts.Controllers
                 return "error: " + ex.Message;
             }
         }
-        [DisableCors]
-        [HttpPost]
-        public async Task<string> UriPost([FromBody]CompanyDto companyDto)
-        {
+        
+        //public async Task<string> UriPost([FromBody]CompanyDto companyDto)
+        //{
             
-            using (var client = new HttpClient())
-            {
-                var request = new
-                {
-                    Url = "http://staging.miraclecbdproducts.com/api/company",
-                    Body = new
-                    {
-                        contact_person = companyDto.Contact_Person,
-                        name = companyDto.Name,
-                        phone_number = companyDto.Phone_Number,
-                        email_address = companyDto.Email_Address,
-                        username = companyDto.Username,
-                        password = companyDto.Password
+        //    using (var client = new HttpClient())
+        //    {
+        //        var request = new
+        //        {
+        //            Url = "http://staging.miraclecbdproducts.com/api/company",
+        //            Body = new
+        //            {
+        //                contact_person = companyDto.Contact_Person,
+        //                name = companyDto.Name,
+        //                phone_number = companyDto.Phone_Number,
+        //                email_address = companyDto.Email_Address,
+        //                username = companyDto.Username,
+        //                password = companyDto.Password
 
-                    }
-                };
-                var response = await client.PostAsJsonAsync(request.Url, ContentHelper.GetStringContent(request.Body));
-                var value = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
+        //            }
+        //        };
+        //        var response = await client.PostAsJsonAsync(request.Url, ContentHelper.GetStringContent(request.Body));
+        //        var value = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
 
-                return response.EnsureSuccessStatusCode().ToString();
-            }
-        }
+        //        return response.EnsureSuccessStatusCode().ToString();
+        //    }
+        //}
 
 
         //[DisableCors]
