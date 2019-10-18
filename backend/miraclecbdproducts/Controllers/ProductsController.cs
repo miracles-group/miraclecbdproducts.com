@@ -72,6 +72,7 @@ namespace MiraclecBDProducts.Controllers
                     Title = product.Name,
                     BodyHtml = product.Description,
                     CreatedAt= DateTime.UtcNow.Date,
+                    PublishedAt = DateTime.UtcNow.Date,
                 };
                 var rs = await ProductServices.AddProduct(shopifyProduct, myShopifyUrl, privateAppPassword);
             }
