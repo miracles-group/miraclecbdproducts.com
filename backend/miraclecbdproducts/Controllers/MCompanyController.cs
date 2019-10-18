@@ -34,8 +34,7 @@ namespace MiraclecBDProducts.Controllers
 
         }
 
-        [DisableCors]
-        [HttpPost]
+       
         public async Task<string> PostURI([FromBody]CompanyDto companyDto)
         {
             Uri u = new Uri("http://staging.miraclecbdproducts.com/api/company");
@@ -53,13 +52,48 @@ namespace MiraclecBDProducts.Controllers
                         Encoding.UTF8,
                         "application/json"
                     );
-                    HttpResponseMessage response = await client.PostAsJsonAsync(u, content);
+                    HttpResponseMessage response = await client.PostAsync(u, content);
                     if (!response.IsSuccessStatusCode)
                     {
                         return string.Empty;
                     }
                     var jsonResponse = await response.Content.ReadAsStringAsync();
                     return jsonResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                return "error: " + ex.Message;
+            }
+        }
+        [DisableCors]
+        [HttpPost]
+        public async Task<string> PostURL([FromBody]CompanyDto companyDto)
+        {
+
+            var company = new CompanyDto();
+            company.Contact_Person = companyDto.Contact_Person;
+            company.Name = companyDto.Name;
+            company.Phone_Number = companyDto.Phone_Number;
+            company.Email_Address = companyDto.Email_Address;
+            company.Username = companyDto.Username;
+            company.Password = companyDto.Password;
+
+            var json = JsonConvert.SerializeObject(company);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var url = "http://staging.miraclecbdproducts.com/api/company";
+            try
+            {
+                using (var client = new HttpClient())
+                {
+
+                    HttpResponseMessage response = await client.PostAsync(url, data);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return string.Empty;
+                    }
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    return result;
                 }
             }
             catch (Exception ex)
