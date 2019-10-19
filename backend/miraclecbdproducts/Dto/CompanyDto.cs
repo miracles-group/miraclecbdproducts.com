@@ -7,12 +7,11 @@ namespace MiraclecBDProducts.Dto
 {
     public class CompanyDto
     {
-        public int Id { get; set; }
-        public string Contact_Person { get; set; }
-        public string Name { get; set; }
-        public string Phone_Number { get; set; }
-        public string Email_Address { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string contact_person { get; set; }
+        public string name { get; set; }
+        public string phone_number { get; set; }
+        public string email_address { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
     }
 }
