@@ -30,7 +30,7 @@ class SignUp extends React.Component {
       re_pass: '',
       loading: false,
       valiEmail: false,
-      valiPass: +
+      valiPass: false
     };
   }
 
