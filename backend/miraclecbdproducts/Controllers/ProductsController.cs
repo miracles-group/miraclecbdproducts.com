@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MiraclecBDProducts.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ShopifySharp;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using MiraclecBDProducts.Services;
 
 namespace MiraclecBDProducts.Controllers
 {
@@ -41,69 +47,83 @@ namespace MiraclecBDProducts.Controllers
         [HttpPost]
         public async Task<ResponseModel> Post([FromBody] Product product)
         {
-            var rs = new ResponseModel()
+            var myShopifyUrl = _config.GetValue<string>("Shopify:Url");
+            var privateAppPassword = _config.GetValue<string>("Shopify:PrivateAppPassword");
+            return await ProductServices.AddProduct(product, myShopifyUrl, privateAppPassword);
+        }
+        List<MiraclesProduct> miraclesProducts { get; set; }
+       
+        public async Task<bool> GetMiraclesProductAsync()
+        {
+            String url = "https://miraclecbdproducts.com/api/product/?username=phamminh1309";
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            string datastring = await response.Content.ReadAsStringAsync();
+            JObject datajson = JObject.Parse(datastring);
+            MiraclesResponse miraclesResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<MiraclesResponse>(datastring);
+            miraclesProducts = miraclesResponse.Results;
+            var myShopifyUrl = _config.GetValue<string>("Shopify:Url");
+            var privateAppPassword = _config.GetValue<string>("Shopify:PrivateAppPassword");
+            foreach (var product in miraclesProducts)
             {
-                Status = 200,
-                Message = string.Empty
-            };
-            try
+                var shopifyProduct = new Product {
+                    Id = product.Id,
+                    Title = product.Name,
+                    BodyHtml = product.Description,
+                    CreatedAt= DateTime.UtcNow.Date,
+                };
+                var rs = await ProductServices.AddProduct(shopifyProduct, myShopifyUrl, privateAppPassword);
+            }
+            return true;
+        }
+        [DisableCors]
+        [HttpGet("autosync")]
+        public async Task<ResponseModel> AutoAsyncMiraclesProduct()
+        {
+            using (var db = new MiraclesContext())
             {
-                using (var db = new MiraclesContext())
+                try
+
                 {
-                    var myShopifyUrl = _config.GetValue<string>("Shopify:Url");
-                    var privateAppPassword = _config.GetValue<string>("Shopify:PrivateAppPassword");
-                    var service = new ProductService(myShopifyUrl, privateAppPassword);
-                    if (!product.Id.HasValue)
+                    var check = db.Setting.Select(o => o.AutoSyncProduct).FirstOrDefault();
+                    if (check != true)
                     {
-                        rs.Status = 500;
-                        rs.Message = "Product ID is required";
-                        return rs;
-                    }
-                    if (string.IsNullOrEmpty(product.Title))
-                    {
-                        rs.Status = 500;
-                        rs.Message = "Title is required";
-                        return rs;
-                    }
-                    long miraclesID = product.Id.Value;
-                    var item = db.MappingOrder.FirstOrDefault(o => o.MiraclesId == miraclesID);
-                    var shopifyProduct = new Product();
-                    if (item != null)
-                    {
-                        shopifyProduct = await service.UpdateAsync(item.ShopifyId, product);
-                        
-                    }
-                    else
-                    {
-                        shopifyProduct = await service.CreateAsync(product);
-                    }
-                    
-                    if (!shopifyProduct.Id.HasValue)
-                    {
-                        rs.Status = 500;
-                        rs.Message = "Can not detect product ID from Shopify. Value: " + shopifyProduct.Id;
-                        return rs;
+                        return null;
                     }
 
-                    var shopifyID = shopifyProduct.Id.Value;
-                    if(item == null)
+                    await GetMiraclesProductAsync();
+ 
+                    db.TblAuditLog.Add(new TblAuditLog
                     {
-                        db.MappingOrder.Add(new MappingOrder()
-                        {
-                            MiraclesId = miraclesID,
-                            ShopifyId = shopifyID
-                        });
-                    }
+                        CreatedAt = DateTime.UtcNow,
+                        Message = "Auto sync is completed."
+                    });
                     db.SaveChanges();
+                    return new ResponseModel
+                    {
+                        Status = 200,
+                        Message = "Auto sync is completed."
+                    };
+
                 }
-                rs.Data = product;
+
+                catch (Exception ex)
+                {
+                    var message = "Auto sync is failed. Message: " + ex.Message + ". Trace: " + ex.StackTrace;
+                    db.TblAuditLog.Add(new TblAuditLog
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        Message = message
+                    });
+                    db.SaveChanges();
+                    return new ResponseModel
+                    {
+                        Status = 200,
+                        Message = message
+                    };
+                }
             }
-            catch (Exception ex)
-            {
-                rs.Status = 500;
-                rs.Message = ex.Message;
-            }
-            return rs;
         }
 
         // PUT api/values/5
