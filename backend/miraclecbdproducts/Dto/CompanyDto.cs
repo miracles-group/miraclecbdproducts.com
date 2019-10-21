@@ -13,5 +13,8 @@ namespace MiraclecBDProducts.Dto
         public string email_address { get; set; }
         public string username { get; set; }
         public string password { get; set; }
+        public string current_password { get; set; }
+        public string new_password { get; set; }
+        public string confirm_new_password { get; set; }
     }
 }

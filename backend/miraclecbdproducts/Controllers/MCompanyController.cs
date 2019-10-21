@@ -88,52 +88,36 @@ namespace MiraclecBDProducts.Controllers
         //}
 
 
-        //[DisableCors]
-        //[HttpPatch("{id}")]
-        //public async Task<ResponseModel> UpdateCompany(int id, [FromBody]CompanyDto _companyDto)
-        //{
-        //    var rs = new ResponseModel()
-        //    {
-        //        Status = 200,
-        //        Message = "Company account was updated."
-        //    };
-        //    try
-        //    {
-        //        using (var db = new MiraclesContext())
-        //        {
-                  
-        //            var item = db.TblCompany.Where(o => o.Id == id).FirstOrDefault();
-        //                if (item !=null)
-        //            {
-        //                if (_companyDto.ContactPerson !=null)
-        //                item.Contact_Person = _companyDto.ContactPerson;
-        //                if (_companyDto.Name != null)
-        //                item.Name = _companyDto.Name;
-        //                if (_companyDto.PhoneNumber !=null)
-        //                item.Phone_Number = _companyDto.PhoneNumber;
-        //                if (_companyDto.EmailAddress != null)
-        //                item.Email_Address = _companyDto.EmailAddress;
-        //                if (_companyDto.Password != null)
-        //                item.Password = _companyDto.Password;
-        //            }
-                  
-        //            else
-        //            {
-        //                rs.Status = 400;
-        //                rs.Message = "Member is not found";
-        //                return rs;
-        //            }
-        //            db.SaveChanges();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        rs.Status = 500;
-        //        rs.Message = "error: " + ex.Message;
-        //    }
+        [DisableCors]
+        [HttpPatch]
+        public async Task<string> UpdateCompany([FromBody]CompanyDto _companyDto)
+        {
 
-        //    return rs;
-        //}
+            var json = JsonConvert.SerializeObject(_companyDto);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var url = "http://staging.miraclecbdproducts.com/api/company/";
+
+           
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                  
+                  HttpResponseMessage response = await client.PatchAsync(url, data);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return string.Empty;
+                    }
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return "error: " + ex.Message;
+            }
+        }
+       
         bool IsValidEmail(string email)
         {
             try
