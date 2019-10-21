@@ -1,6 +1,6 @@
 import actions from './actions';
 import { all, fork, put, takeLatest } from 'redux-saga/effects';
-import { login } from '../../services/auth';
+import { login, singUp } from '../../services/auth';
 
 export function* loginSaga() {
   yield takeLatest(actions.LOGIN_REQUEST, function*(data) {
@@ -20,6 +20,21 @@ export function* loginSaga() {
   });
 }
 
+export function* singUpSaga() {
+  yield takeLatest(actions.SINGUP_REQUEST, function*(data) {
+    try {
+      const res = yield singUp(data.params);
+      if (res.data.status === 200) {
+        yield data.success();
+      } else {
+        yield data.fail(res.data.message);
+      }
+    } catch (error) {
+      yield data.fail(error);
+    }
+  });
+}
+
 export default function* rootSaga() {
-  yield all([fork(loginSaga)]);
+  yield all([fork(loginSaga), fork(singUpSaga)]);
 }

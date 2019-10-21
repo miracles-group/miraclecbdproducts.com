@@ -12,11 +12,12 @@
     "i18next-browser-languagedetector": "^3.0.3",
     "i18next-xhr-backend": "^3.2.0",
     "lodash": "^4.17.15",
+    "next": "^9.1.1",
     "node-sass": "^4.12.0",
     "noty": "^3.2.0-beta",
     "prop-types": "^15.7.2",
     "react": "^16.10.1",
-    "react-dom": "^16.10.1",
+    "react-dom": "^16.10.2",
     "react-i18next": "^10.13.1",
     "react-loader-spinner": "^3.1.4",
     "react-redux": "^7.1.1",
@@ -30,12 +31,15 @@
     "start": "react-scripts start",
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "eslint \"**/*.js\" --quiet",
+    "fix": "eslint \"**/*.js\" --fix",
     "windows": "cross-env NODE_PATH=src/ react-scripts start",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "eslint": "recommended",
+    "plugin": "react/recommended"
   },
   "browserslist": {
     "production": [
@@ -48,5 +52,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^3.6.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "lint-staged": "^8.0.4",
+    "prettier": "^1.18.2"
   }
 }

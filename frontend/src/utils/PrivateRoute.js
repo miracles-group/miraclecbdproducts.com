@@ -1,21 +1,27 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import Layout from '../containers/layout';
+import PropTypes from 'prop-types';
 
-export const PrivateRoute = ({ component: Component, ...rest }) => {
+const PropTye = {
+  component: PropTypes.func,
+  location: PropTypes.object
+};
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
       render={props =>
         localStorage.getItem('logged') === 'true' ? (
-          <Layout>
-            <Component {...props} />
-          </Layout>
+          <Component {...props} />
         ) : (
-          //   <Component {...props} />
           <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         )
       }
     />
   );
 };
+
+PrivateRoute.propTypes = PropTye;
+
+export { PrivateRoute };

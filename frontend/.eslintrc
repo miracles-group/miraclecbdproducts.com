@@ -43,6 +43,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-console": "warn",
         "comma-dangle": 2,
         "no-cond-assign": 2,
         "no-control-regex": 2,

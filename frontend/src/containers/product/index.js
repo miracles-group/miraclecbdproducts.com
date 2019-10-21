@@ -9,9 +9,18 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Noty from 'noty';
 import Loader from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 import { Sync } from '@material-ui/icons';
 import { productActions } from '../../store/actions';
 import { connect } from 'react-redux';
+
+const PropType = {
+  getProduct: PropTypes.func.isRequired,
+  addProduct: PropTypes.func.isRequired,
+  setting: PropTypes.func.isRequired,
+  autoSyncProduct: PropTypes.bool.isRequired,
+  product: PropTypes.array.isRequired
+};
 
 class Product extends React.Component {
   constructor(props) {
@@ -183,6 +192,8 @@ const mapDispatchToProps = {
   getSetting: productActions.getSetting,
   setting: productActions.setting
 };
+
+Product.propTypes = PropType;
 
 export default connect(
   mapStateToProps,

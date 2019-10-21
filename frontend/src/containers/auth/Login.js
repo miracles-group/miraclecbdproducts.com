@@ -2,14 +2,18 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import PropTypes from 'prop-types';
 import Noty from 'noty';
 import history from '../../utils/history';
+import { Link } from 'react-router-dom';
 import { authActions } from '../../store/actions';
 import { connect } from 'react-redux';
+
+const PropType = {
+  sigin: PropTypes.func.isRequired
+};
 
 class Login extends React.Component {
   constructor(props) {
@@ -101,25 +105,10 @@ class Login extends React.Component {
               type="password"
               autoComplete="current-password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button type="submit" fullWidth variant="contained" color="primary" className="submit">
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+            <Link to="/singup">{"Don't have an account? Sign Up"}</Link>
           </form>
         </div>
       </Container>
@@ -131,6 +120,7 @@ const mapDispatchToProps = {
   sigin: authActions.login
 };
 
+Login.propTypes = PropType;
 export default connect(
   null,
   mapDispatchToProps

@@ -8,4 +8,12 @@ const login = params => {
   });
 };
 
-export { login };
+const singUp = params => {
+  return request({
+    url: '/company',
+    method: 'POST',
+    data: params
+  });
+};
+
+export { login, singUp };

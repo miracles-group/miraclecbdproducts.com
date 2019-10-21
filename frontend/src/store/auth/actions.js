@@ -7,6 +7,16 @@ const actions = {
     params,
     success,
     fail
+  }),
+
+  SINGUP_REQUEST: 'SINGUP_REQUEST',
+  SINGUP_SUCCESS: 'SINGUP_SUCCESS',
+
+  sigUp: (params, success, fail) => ({
+    type: actions.SINGUP_REQUEST,
+    params,
+    success,
+    fail
   })
 };
 

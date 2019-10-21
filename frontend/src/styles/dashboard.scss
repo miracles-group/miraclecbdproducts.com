@@ -21,3 +21,16 @@
   align-items: center;
   justify-content: center;
 }
+
+.siderbar {
+  a {
+    list-style: none;
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .active {
+    .MuiButtonBase-root {
+      background: #d6d6c2;
+    }
+  }
+}

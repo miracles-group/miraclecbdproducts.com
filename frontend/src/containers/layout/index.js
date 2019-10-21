@@ -16,6 +16,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import history from '../../utils/history';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Route, NavLink } from 'react-router-dom';
+import Product from '../product';
 
 const drawerWidth = 220;
 
@@ -76,13 +78,16 @@ const ResponsiveDrawer = props => {
           alt="logo"
         />
       </div>
-      <List>
-        <ListItem button>
-          <ListItemIcon>
-            <LocalMallIcon />
-          </ListItemIcon>
-          <ListItemText primary="Products" />
-        </ListItem>
+      <List className="siderbar">
+        <NavLink to="/" activeClassName="active">
+          <ListItem button>
+            <ListItemIcon>
+              <LocalMallIcon />
+            </ListItemIcon>
+            <ListItemText primary="Products" />
+          </ListItem>
+        </NavLink>
+
         <ListItem button onClick={logOut}>
           <ListItemIcon>
             <ExitToAppIcon />
@@ -142,7 +147,7 @@ const ResponsiveDrawer = props => {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {props.children}
+        <Route exact path="/" component={Product}></Route>
       </main>
     </div>
   );

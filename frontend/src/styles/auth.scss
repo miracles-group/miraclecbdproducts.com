@@ -6,6 +6,7 @@
   .form {
     width: 100%;
     margin-top: 8px;
+    text-align: center;
   }
   .submit {
     margin: 24px 0px 16px;
@@ -13,4 +14,11 @@
   .avatar {
     margin: 8px;
   }
+  .MuiOutlinedInput-input {
+    padding: 14px;
+  }
+}
+
+.form-register {
+  margin: 0 !important;
 }
