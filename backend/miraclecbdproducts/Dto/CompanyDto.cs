@@ -16,5 +16,7 @@ namespace MiraclecBDProducts.Dto
         public string current_password { get; set; }
         public string new_password { get; set; }
         public string confirm_new_password { get; set; }
+
+        public string shop_url { get; set; }
     }
 }

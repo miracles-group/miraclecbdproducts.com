@@ -127,6 +127,7 @@ namespace MiraclecBDProducts.Controllers
                 }
             }
         }
+
         [HttpPatch("{id}")]
         public async Task<ResponseModel> UpdateProduct(int id, [FromBody]ProductDto productDto)
         {

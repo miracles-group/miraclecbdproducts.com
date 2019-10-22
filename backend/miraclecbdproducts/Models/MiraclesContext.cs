@@ -58,6 +58,10 @@ namespace MiraclecBDProducts.Models
                     .HasColumnName("Contact_Person")
                     .HasMaxLength(50);
 
+                entity.Property(e => e.CurrentPassword)
+                    .HasColumnName("Current_password")
+                    .HasMaxLength(50);
+
                 entity.Property(e => e.EmailAddress)
                     .HasColumnName("Email_Address")
                     .HasMaxLength(100);
@@ -69,6 +73,10 @@ namespace MiraclecBDProducts.Models
                 entity.Property(e => e.PhoneNumber)
                     .HasColumnName("Phone_Number")
                     .HasMaxLength(15);
+
+                entity.Property(e => e.ShopUrl)
+                    .HasColumnName("Shop_Url")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Username).HasMaxLength(50);
             });

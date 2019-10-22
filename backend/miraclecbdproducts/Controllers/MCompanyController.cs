@@ -34,8 +34,7 @@ namespace MiraclecBDProducts.Controllers
 
         }
 
-        [DisableCors]
-        [HttpPost]
+        
         public async Task<string> PostURL([FromBody]CompanyDto companyDto)
         {
             var json = JsonConvert.SerializeObject(companyDto);
@@ -51,6 +50,7 @@ namespace MiraclecBDProducts.Controllers
                     {
                         return string.Empty;
                     }
+                    
                     string result = response.Content.ReadAsStringAsync().Result;
                     return result;
                 }
@@ -60,64 +60,153 @@ namespace MiraclecBDProducts.Controllers
                 return "error: " + ex.Message;
             }
         }
-        
-        //public async Task<string> UriPost([FromBody]CompanyDto companyDto)
-        //{
-            
-        //    using (var client = new HttpClient())
-        //    {
-        //        var request = new
-        //        {
-        //            Url = "http://staging.miraclecbdproducts.com/api/company",
-        //            Body = new
-        //            {
-        //                contact_person = companyDto.Contact_Person,
-        //                name = companyDto.Name,
-        //                phone_number = companyDto.Phone_Number,
-        //                email_address = companyDto.Email_Address,
-        //                username = companyDto.Username,
-        //                password = companyDto.Password
-
-        //            }
-        //        };
-        //        var response = await client.PostAsJsonAsync(request.Url, ContentHelper.GetStringContent(request.Body));
-        //        var value = JsonConvert.DeserializeObject(await response.Content.ReadAsStringAsync());
-
-        //        return response.EnsureSuccessStatusCode().ToString();
-        //    }
-        //}
-
-
         [DisableCors]
-        [HttpPatch]
-        public async Task<string> UpdateCompany([FromBody]CompanyDto _companyDto)
+        [HttpPost]
+        public async Task<ResponseModel> PostData([FromBody]CompanyDto companyDto)
+        {
+            var json = JsonConvert.SerializeObject(companyDto);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var url = "http://staging.miraclecbdproducts.com/api/company/";
+            var rs = new ResponseModel()
+            {
+                Status = 200,
+                Message = "Company account was created."
+            };
+            try
+            {
+                using (var db = new MiraclesContext())
+                {
+                    using (var client = new HttpClient())
+                    {
+
+                        HttpResponseMessage response = await client.PostAsync(url, data);
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            rs.Status = 400;
+                            rs.Data = "";
+                            rs.Message = "";
+                            return rs;
+                        }
+                        else
+                        {
+                            db.TblMcompany.Add(new TblMcompany
+                            {
+                                ContactPerson = companyDto.contact_person.Trim(),
+                                Name = companyDto.name.Trim(),
+                                PhoneNumber = companyDto.phone_number.Trim(),
+                                EmailAddress = companyDto.email_address.Trim(),
+                                Username = companyDto.username.Trim(),
+                                Password = companyDto.password.Trim(),
+                                CurrentPassword = companyDto.password.Trim(),
+                                ShopUrl = companyDto.shop_url.Trim()
+                            });
+                            db.SaveChanges();
+                        }
+                     
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                rs.Status = 500;
+                rs.Message = "Error" + ex.Message;
+            }
+            return rs;
+        }
+        
+        //Scaffold-DbContext "Server=sql5045.site4now.net;Integrated Security=False;Database=DB_9A9CCA_shopify;
+        //User ID=DB_9A9CCA_shopify_admin;Password=Vbn*34295;
+        //MultipleActiveResultSets=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MiraclesContext -Force
+        [DisableCors]
+        [HttpPatch("{username}")]
+        public async Task<ResponseModel> UpdateCompany(string username, [FromBody]CompanyDto _companyDto)
         {
 
             var json = JsonConvert.SerializeObject(_companyDto);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             var url = "http://staging.miraclecbdproducts.com/api/company/";
 
-           
+            var rs = new ResponseModel()
+            {
+                Status = 200,
+                Message = "Company account was updated."
+            };
             try
             {
-                using (var client = new HttpClient())
+                using (var db = new MiraclesContext())
                 {
-                  
-                  HttpResponseMessage response = await client.PatchAsync(url, data);
-                    if (!response.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        return string.Empty;
+
+                        HttpResponseMessage response = await client.PatchAsync(url, data);
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            rs.Status = 400;
+                            rs.Data = "";
+                            rs.Message = "";
+                            return rs;
+                        }
+                        else
+                        {
+                            var item = db.TblMcompany.Where(o => o.Username == username).FirstOrDefault();
+                            if (item != null)
+                            {
+                                if (_companyDto.contact_person != null)
+                                    item.ContactPerson = _companyDto.contact_person.Trim();
+                                if (_companyDto.name != null)
+                                    item.Name = _companyDto.name.Trim();
+                                if (_companyDto.phone_number != null)
+                                    item.PhoneNumber = _companyDto.phone_number.Trim();
+                                if (_companyDto.email_address != null)
+                                    item.EmailAddress = _companyDto.email_address.Trim();
+                                if (_companyDto.confirm_new_password != null)
+                                {
+                                    item.Password = _companyDto.confirm_new_password.Trim();
+                                    item.CurrentPassword = _companyDto.confirm_new_password.Trim();
+                                }
+                                if (_companyDto.shop_url != null)
+                                    item.ShopUrl = _companyDto.shop_url.Trim();
+                            }
+                            db.SaveChanges();
+                        }
+                      
                     }
-                    string result = response.Content.ReadAsStringAsync().Result;
-                    return result;
                 }
             }
             catch (Exception ex)
             {
-                return "error: " + ex.Message;
+                rs.Status = 500;
+                rs.Message = "Error" + ex.Message;
             }
+            return rs;
         }
        
+        [DisableCors]
+        [HttpGet("{shopurl}")]
+
+        public TblMcompany GetCompanyProfile(string shopurl)
+        {
+            
+            using (var db = new MiraclesContext())
+            {
+                var rs = db.TblMcompany.Select(o => o.ShopUrl).ToList();
+                var tb = rs[2];
+                int i = 0;
+                while (i < rs.Count)
+                {
+                    if (checkstring(rs[i], shopurl))
+                    {
+                        var result = db.TblMcompany.Where(o => o.ShopUrl == rs[i]).FirstOrDefault();
+                        return result;
+                    }
+                    else
+                        i++;
+                }
+                    return null;
+                
+            }
+        }
+
         bool IsValidEmail(string email)
         {
             try
@@ -130,7 +219,23 @@ namespace MiraclecBDProducts.Controllers
                 return false;
             }
         }
-      
+       public bool checkstring(string nameData, string nameUrl)
+        {
+            if (nameData != null)
+            {
+                nameData = nameData.Trim();
+                nameData = nameData.Replace(" ", "");
+            }
+            else
+            {
+                return false;
+            }
+            if (nameData == nameUrl)
+                return true;
+            return false;
+        }
+        
+
         public static bool IsPhoneNumber(string number)
         {
             string pattern = @"^-*[0-9,\.?\-?\(?\)?\ ]+$";
