@@ -197,7 +197,19 @@ namespace MiraclecBDProducts.Controllers
                     if (checkstring(rs[i], shopurl))
                     {
                         var result = db.TblMcompany.Where(o => o.ShopUrl == rs[i]).FirstOrDefault();
-                        return result;
+                        return new TblMcompany()
+                        {
+                            Id = result.Id,
+                            ContactPerson = result.ContactPerson.Trim(),
+                            Name =  result.Name.Trim(),
+                            PhoneNumber = result.PhoneNumber,
+                            EmailAddress = result.EmailAddress.Trim(),
+                            Username = result.Username.Trim(),
+                            Password = result.Password.Trim(),
+                            CurrentPassword = result.CurrentPassword.Trim(),
+                            ShopUrl = result.ShopUrl.Trim()
+
+                        };
                     }
                     else
                         i++;
