@@ -71,7 +71,6 @@ class SingUp extends React.Component {
       loading: true
     });
     const res = await singUp(this.state.user);
-    console.log(res);
     if (res.status === 200) {
       this.setState({
         loading: false

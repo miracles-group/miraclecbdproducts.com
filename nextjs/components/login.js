@@ -60,7 +60,7 @@ class Login extends React.Component {
       <div className="materialContainer">
         <div className="box">
           <div className="title">LOGIN</div>
-          <form onSubmit={this.signIn}>
+          <form onSubmit={this.signIn} >
             <div className="input">
               <input
                 placeholder="Username"

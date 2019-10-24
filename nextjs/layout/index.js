@@ -1,7 +1,7 @@
 import React from "react";
-import "../styles/Layout.scss";
+import "../styles/wapper.scss";
 import { Button } from "@material-ui/core";
-import { Menu, ExitToApp, LocalMall } from "@material-ui/icons";
+import { Menu, ExitToApp, LocalMall, Settings } from "@material-ui/icons";
 import Router from "next/router";
 import Cookie from "js-cookie";
 
@@ -10,6 +10,14 @@ function openSidebar() {
 }
 function closeSidebar() {
   document.getElementById("sideMenu").style.display = "none";
+}
+
+function getProfile() {
+  const params = localStorage.getItem("shopUrl");
+  Router.push({
+    pathname: "/setting",
+    query: { shopUrl: params }
+  });
 }
 
 function logOut() {
@@ -37,11 +45,17 @@ const Layout = props => {
               alt="logo"
             />
           </div>
-          <div className="item">
+          <div className="item" onClick={() => Router.push("/")}>
             <div className="itemIcon">
               <LocalMall />
             </div>
             <div className="itemText">Product</div>
+          </div>
+          <div className="item" onClick={getProfile}>
+            <div className="itemIcon">
+              <Settings />
+            </div>
+            <div className="itemText">Setting</div>
           </div>
           <div className="item" onClick={logOut}>
             <div className="itemIcon">
@@ -64,11 +78,17 @@ const Layout = props => {
                   alt="logo"
                 />
               </div>
-              <div className="item">
+              <div className="item" onClick={() => Router.push("/")}>
                 <div className="itemIcon">
                   <LocalMall />
                 </div>
                 <div className="itemText">Product</div>
+              </div>
+              <div className="item" onClick={getProfile}>
+                <div className="itemIcon">
+                  <Settings />
+                </div>
+                <div className="itemText">Setting</div>
               </div>
               <div className="item" onClick={logOut}>
                 <div className="itemIcon">

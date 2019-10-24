@@ -15,19 +15,19 @@ import {
   setting,
   createProduct
 } from "../services/products";
-import Router from "next/router";
+import "../styles/index.scss";
 import "../node_modules/noty/lib/noty.css";
 import "../node_modules/noty/lib/themes/mint.css";
 
-const redirectToLogin = res => {
-  if (res) {
-    res.writeHead(302, { Location: "/login" });
-    res.end();
-    res.finished = true;
-  } else {
-    Router.push("/login");
-  }
-};
+// const redirectToLogin = res => {
+//   if (res) {
+//     res.writeHead(302, { Location: "/login" });
+//     res.end();
+//     res.finished = true;
+//   } else {
+//     Router.push("/login");
+//   }
+// };
 
 class Product extends React.Component {
   constructor(props) {
@@ -40,19 +40,28 @@ class Product extends React.Component {
       product: []
     };
   }
-  static async getInitialProps({ req, res }) {
-    if (res) {
-      const loged = req.headers.cookie;
-      if (loged === "loged=false" || loged === undefined) {
-        redirectToLogin(res);
-      }
-    }
+  static async getInitialProps({ req, res, pathname }) {
+    // if (res) {
+    //   const loged = req.headers.cookie;
+    //   if (loged === "loged=false" || loged === undefined) {
+    //     redirectToLogin(res);
+    //   }
+    // }
 
     const listProduct = await getProduct();
     const data = listProduct.data;
     const resSetting = await getSetting();
     const setting = resSetting.data.autoSyncProduct;
-    return { data, setting };
+    return { data, setting, pathname };
+  }
+  componentDidUpdate() {
+    // console.log(this.props.url.asPath);
+    const _domain = window.location.origin;
+    const _url = this.props.url.asPath;
+    const path = _domain + _url;
+    const url = new URL(path);
+    const shopName = url.searchParams.get("shop");
+    localStorage.setItem("shopUrl", shopName);
   }
   componentDidMount() {
     this.setState({
@@ -107,7 +116,6 @@ class Product extends React.Component {
       ]
     };
     const res = await createProduct(item);
-    // console.log(res.status);
     if (res.status === 200) {
       this.onSucces();
     } else {
@@ -137,7 +145,7 @@ class Product extends React.Component {
     const { page, rowsPerPage, loading } = this.state;
     return (
       <Layout>
-        {!this.state.loading && (
+        {!loading && (
           <div>
             <div>
               <input
@@ -170,7 +178,7 @@ class Product extends React.Component {
                             {value.sub_category}
                           </TableCell>
                           <TableCell align="left">{value.price}</TableCell>
-                          <TableCell value={value}>
+                          <TableCell value={value} className="actions">
                             <Sync
                               className="add"
                               onClick={() => this.addProduct(value)}
