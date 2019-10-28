@@ -1,9 +1,8 @@
 import React from "react";
 import "../styles/wapper.scss";
 import { Button } from "@material-ui/core";
-import { Menu, ExitToApp, LocalMall, Settings } from "@material-ui/icons";
+import { Menu, LocalMall, Settings, Dashboard } from "@material-ui/icons";
 import Router from "next/router";
-import Cookie from "js-cookie";
 
 function openSidebar() {
   document.getElementById("sideMenu").style.display = "block";
@@ -18,11 +17,6 @@ function getProfile() {
     pathname: "/setting",
     query: { shopUrl: params }
   });
-}
-
-function logOut() {
-  Cookie.set("loged", false);
-  Router.push("/login");
 }
 
 const Layout = props => {
@@ -45,6 +39,12 @@ const Layout = props => {
               alt="logo"
             />
           </div>
+          <div className="item" onClick={() => Router.push("/dasboard")}>
+            <div className="itemIcon">
+              <Dashboard />
+            </div>
+            <div className="itemText">Dasboard</div>
+          </div>
           <div className="item" onClick={() => Router.push("/")}>
             <div className="itemIcon">
               <LocalMall />
@@ -56,12 +56,6 @@ const Layout = props => {
               <Settings />
             </div>
             <div className="itemText">Setting</div>
-          </div>
-          <div className="item" onClick={logOut}>
-            <div className="itemIcon">
-              <ExitToApp />
-            </div>
-            <div className="itemText">Logout</div>
           </div>
         </div>
       </div>
@@ -78,6 +72,12 @@ const Layout = props => {
                   alt="logo"
                 />
               </div>
+              <div className="item" onClick={() => Router.push("/dasboard")}>
+                <div className="itemIcon">
+                  <Dashboard />
+                </div>
+                <div className="itemText">Dasboard</div>
+              </div>
               <div className="item" onClick={() => Router.push("/")}>
                 <div className="itemIcon">
                   <LocalMall />
@@ -89,12 +89,6 @@ const Layout = props => {
                   <Settings />
                 </div>
                 <div className="itemText">Setting</div>
-              </div>
-              <div className="item" onClick={logOut}>
-                <div className="itemIcon">
-                  <ExitToApp />
-                </div>
-                <div className="itemText">Logout</div>
               </div>
             </div>
           </div>

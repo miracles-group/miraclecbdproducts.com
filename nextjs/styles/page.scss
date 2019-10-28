@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  // margin: 5px;
+  flex-direction: column;
+  flex: 1;
   form {
     display: flex;
     flex-direction: column;
