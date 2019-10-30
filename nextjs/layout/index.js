@@ -29,13 +29,15 @@ const Layout = props => {
             <Menu />
           </Button>
         </div>
-        <Button className="btnSync" onClick={props.autoSync}>
-          {props.loading ? (
-            <CircularProgress size={24} className="circularColor" />
-          ) : (
-            <Sync className="icon" />
-          )}
-        </Button>
+        {props.btnSync && (
+          <Button className="btnSync" onClick={props.autoSync}>
+            {props.loading ? (
+              <CircularProgress size={24} className="circularColor" />
+            ) : (
+              <Sync className="icon" />
+            )}
+          </Button>
+        )}
       </div>
       <div className="sidebar">
         <div className="itemMenu">

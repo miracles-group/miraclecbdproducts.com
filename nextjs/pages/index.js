@@ -146,7 +146,11 @@ class Product extends React.Component {
   render() {
     const { page, rowsPerPage, loading } = this.state;
     return (
-      <Layout autoSync={this.autoSync} loading={this.state.syncLoading}>
+      <Layout
+        btnSync={true}
+        autoSync={this.autoSync}
+        loading={this.state.syncLoading}
+      >
         {!loading && (
           <div>
             <div>
