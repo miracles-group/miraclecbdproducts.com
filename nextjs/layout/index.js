@@ -39,11 +39,11 @@ const Layout = props => {
               alt="logo"
             />
           </div>
-          <div className="item" onClick={() => Router.push("/dasboard")}>
+          <div className="item" onClick={() => Router.push("/dashboard")}>
             <div className="itemIcon">
               <Dashboard />
             </div>
-            <div className="itemText">Dasboard</div>
+            <div className="itemText">Dashboard</div>
           </div>
           <div className="item" onClick={() => Router.push("/")}>
             <div className="itemIcon">
@@ -55,7 +55,7 @@ const Layout = props => {
             <div className="itemIcon">
               <Settings />
             </div>
-            <div className="itemText">Setting</div>
+            <div className="itemText">Settings</div>
           </div>
         </div>
       </div>
@@ -72,11 +72,11 @@ const Layout = props => {
                   alt="logo"
                 />
               </div>
-              <div className="item" onClick={() => Router.push("/dasboard")}>
+              <div className="item" onClick={() => Router.push("/dashboard")}>
                 <div className="itemIcon">
                   <Dashboard />
                 </div>
-                <div className="itemText">Dasboard</div>
+                <div className="itemText">Dashboard</div>
               </div>
               <div className="item" onClick={() => Router.push("/")}>
                 <div className="itemIcon">
