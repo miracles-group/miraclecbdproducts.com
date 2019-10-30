@@ -30,3 +30,10 @@ export const getSetting = () => {
     method: "GET"
   });
 };
+
+export const autoSync = () => {
+  return request({
+    url: "/Products/optionalsync",
+    method: "GET"
+  });
+};

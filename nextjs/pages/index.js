@@ -13,21 +13,12 @@ import {
   getProduct,
   getSetting,
   setting,
-  createProduct
+  createProduct,
+  autoSync
 } from "../services/products";
 import "../styles/index.scss";
 import "../node_modules/noty/lib/noty.css";
 import "../node_modules/noty/lib/themes/mint.css";
-
-// const redirectToLogin = res => {
-//   if (res) {
-//     res.writeHead(302, { Location: "/login" });
-//     res.end();
-//     res.finished = true;
-//   } else {
-//     Router.push("/login");
-//   }
-// };
 
 class Product extends React.Component {
   constructor(props) {
@@ -37,17 +28,11 @@ class Product extends React.Component {
       rowsPerPage: 20,
       autoSyncProduct: props.setting,
       loading: true,
+      syncLoading: false,
       product: []
     };
   }
   static async getInitialProps({ req, res, pathname }) {
-    // if (res) {
-    //   const loged = req.headers.cookie;
-    //   if (loged === "loged=false" || loged === undefined) {
-    //     redirectToLogin(res);
-    //   }
-    // }
-
     const listProduct = await getProduct();
     const data = listProduct.data;
     const resSetting = await getSetting();
@@ -117,17 +102,34 @@ class Product extends React.Component {
     };
     const res = await createProduct(item);
     if (res.status === 200) {
-      this.onSucces();
+      this.onSucces("Sync Product Successfuly");
     } else {
       this.onFail(res.data.message);
     }
   };
 
-  onSucces = () => {
+  autoSync = async () => {
+    this.setState({
+      syncLoading: true
+    });
+    const res = await autoSync();
+    if (res.data.status === 200) {
+      this.setState(
+        {
+          syncLoading: false
+        },
+        () => this.onSucces(res.data.message)
+      );
+    } else {
+      this.onFail(res.data.message);
+    }
+  };
+
+  onSucces = mess => {
     return new Noty({
       type: "success",
       layout: "topRight",
-      text: "Successfully ",
+      text: mess,
       timeout: 3000
     }).show();
   };
@@ -144,7 +146,7 @@ class Product extends React.Component {
   render() {
     const { page, rowsPerPage, loading } = this.state;
     return (
-      <Layout>
+      <Layout autoSync={this.autoSync} loading={this.state.syncLoading}>
         {!loading && (
           <div>
             <div>

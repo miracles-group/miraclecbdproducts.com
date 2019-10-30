@@ -1,9 +1,8 @@
 import axios from "axios";
-// const { REACT_APP_BASE_URL } = "https://shopify.miracles.vn/api" | process.env;
 
 const request = axios.create({
   baseURL: "https://shopify.miracles.vn/api",
-  timeout: 20000,
+  // timeout: 20000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json"

@@ -1,7 +1,8 @@
 import React from "react";
 import "../styles/wapper.scss";
 import { Button } from "@material-ui/core";
-import { Menu, LocalMall, Settings, Dashboard } from "@material-ui/icons";
+import { Menu, LocalMall, Settings, Dashboard, Sync } from "@material-ui/icons";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Router from "next/router";
 
 function openSidebar() {
@@ -28,6 +29,13 @@ const Layout = props => {
             <Menu />
           </Button>
         </div>
+        <Button className="btnSync" onClick={props.autoSync}>
+          {props.loading ? (
+            <CircularProgress size={24} className="circularColor" />
+          ) : (
+            <Sync className="icon" />
+          )}
+        </Button>
       </div>
       <div className="sidebar">
         <div className="itemMenu">

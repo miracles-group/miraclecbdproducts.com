@@ -134,6 +134,19 @@
   padding: 24px;
 }
 
+.btnSync {
+  position: absolute !important;
+  right: 10px;
+  top: 11px;
+  .icon {
+    color: #fff !important;
+  }
+}
+
+.circularColor {
+  color: #fff !important;
+}
+
 @media only screen and (max-width: 768px) {
   .sidebar {
     display: none;
