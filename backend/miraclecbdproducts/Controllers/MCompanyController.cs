@@ -34,7 +34,7 @@ namespace MiraclecBDProducts.Controllers
 
         }
 
-        
+
         public async Task<string> PostURL([FromBody]CompanyDto companyDto)
         {
             var json = JsonConvert.SerializeObject(companyDto);
@@ -50,7 +50,7 @@ namespace MiraclecBDProducts.Controllers
                     {
                         return string.Empty;
                     }
-                    
+
                     string result = response.Content.ReadAsStringAsync().Result;
                     return result;
                 }
@@ -102,7 +102,7 @@ namespace MiraclecBDProducts.Controllers
                             });
                             db.SaveChanges();
                         }
-                     
+
                     }
                 }
             }
@@ -113,7 +113,7 @@ namespace MiraclecBDProducts.Controllers
             }
             return rs;
         }
-        
+
         //Scaffold-DbContext "Server=sql5045.site4now.net;Integrated Security=False;Database=DB_9A9CCA_shopify;
         //User ID=DB_9A9CCA_shopify_admin;Password=Vbn*34295;
         //MultipleActiveResultSets=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Context MiraclesContext -Force
@@ -169,7 +169,7 @@ namespace MiraclecBDProducts.Controllers
                             }
                             db.SaveChanges();
                         }
-                      
+
                     }
                 }
             }
@@ -180,42 +180,28 @@ namespace MiraclecBDProducts.Controllers
             }
             return rs;
         }
-       
+
         [DisableCors]
         [HttpGet("{shopurl}")]
 
         public TblMcompany GetCompanyProfile(string shopurl)
         {
-            
             using (var db = new MiraclesContext())
             {
-                var rs = db.TblMcompany.Select(o => o.ShopUrl).ToList();
-                var tb = rs[2];
-                int i = 0;
-                while (i < rs.Count)
+                var result = db.TblMcompany.Where(o => o.ShopUrl == shopurl).FirstOrDefault();
+                return new TblMcompany()
                 {
-                    if (checkstring(rs[i], shopurl))
-                    {
-                        var result = db.TblMcompany.Where(o => o.ShopUrl == rs[i]).FirstOrDefault();
-                        return new TblMcompany()
-                        {
-                            Id = result.Id,
-                            ContactPerson = result.ContactPerson.Trim(),
-                            Name =  result.Name.Trim(),
-                            PhoneNumber = result.PhoneNumber,
-                            EmailAddress = result.EmailAddress.Trim(),
-                            Username = result.Username.Trim(),
-                            Password = result.Password.Trim(),
-                            CurrentPassword = result.CurrentPassword.Trim(),
-                            ShopUrl = result.ShopUrl.Trim()
+                    Id = result.Id,
+                    ContactPerson = result.ContactPerson.Trim(),
+                    Name = result.Name.Trim(),
+                    PhoneNumber = result.PhoneNumber,
+                    EmailAddress = result.EmailAddress.Trim(),
+                    Username = result.Username.Trim(),
+                    Password = result.Password.Trim(),
+                    CurrentPassword = result.CurrentPassword.Trim(),
+                    ShopUrl = result.ShopUrl.Trim()
 
-                        };
-                    }
-                    else
-                        i++;
-                }
-                    return null;
-                
+                };
             }
         }
 
@@ -231,7 +217,7 @@ namespace MiraclecBDProducts.Controllers
                 return false;
             }
         }
-       public bool checkstring(string nameData, string nameUrl)
+        public bool checkstring(string nameData, string nameUrl)
         {
             if (nameData != null)
             {
@@ -246,7 +232,7 @@ namespace MiraclecBDProducts.Controllers
                 return true;
             return false;
         }
-        
+
 
         public static bool IsPhoneNumber(string number)
         {
@@ -255,5 +241,5 @@ namespace MiraclecBDProducts.Controllers
         }
     }
 
-   
+
 }
