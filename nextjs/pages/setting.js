@@ -37,7 +37,6 @@ class Setting extends React.Component {
   }
   static async getInitialProps({ req, query }) {
     const resProfile = await getProfile(query.shopUrl);
-
     return { query, resProfile };
   }
 

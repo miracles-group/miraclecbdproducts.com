@@ -40,13 +40,14 @@ class Product extends React.Component {
     return { data, setting, pathname };
   }
   componentDidUpdate() {
-    // console.log(this.props.url.asPath);
-    const _domain = window.location.origin;
-    const _url = this.props.url.asPath;
-    const path = _domain + _url;
-    const url = new URL(path);
-    const shopName = url.searchParams.get("shop");
-    localStorage.setItem("shopUrl", shopName);
+    if (this.props.url.asPath !== "/") {
+      const _domain = window.location.origin;
+      const _url = this.props.url.asPath;
+      const path = _domain + _url;
+      const url = new URL(path);
+      const shopName = url.searchParams.get("shop");
+      localStorage.setItem("shopUrl", shopName);
+    }
   }
   componentDidMount() {
     this.setState({

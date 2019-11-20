@@ -54,7 +54,7 @@ class Dashboard extends React.Component {
                     <p>Our Miracle Nutritional Products are being sold in over 9,000 store locations across the United States and Europe with rapid growth with over 300 private label partners.</p>
                     <p>Forbes magazine stated that the CBD industry is currently at $220 Million dollars in 2017. Forbes has projected that by 2021 the CBD industry will surpass 2.6 BILLION dollars. That is a projected growth of over 500%</p>
                     <h3>Support</h3>
-                    <p>In case you have any questions or need technical assistance, please email us at <a href="mailto:drop-ship@miraclecproducts.com">drop-ship@miraclecproducts.com</a></p>
+                    <p>In case you have any questions or need technical assistance, please email us at <a href="mailto:dropship@miraclecproducts.com">dropship@miraclecproducts.com</a></p>
                     <h3>Follow Us</h3>
                     <p>Our Official Website – <a href="https://miraclecbdproducts.com" target="_blank">https://miraclecbdproducts.com</a></p>
                     <p>Our Facebook Page – <a href="https://www.facebook.com/mnpcbd/" target="_blank">https://www.facebook.com/mnpcbd/</a></p>
