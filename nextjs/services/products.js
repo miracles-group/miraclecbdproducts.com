@@ -33,7 +33,7 @@ export const getSetting = () => {
 
 export const autoSync = () => {
   return request({
-    url: "/Products/optionalsync",
+    url: "/Products/autosync",
     method: "GET"
   });
 };

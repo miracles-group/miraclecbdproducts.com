@@ -33,10 +33,16 @@ class Product extends React.Component {
     };
   }
   static async getInitialProps({ req, res, pathname }) {
+    let data = null;
+    let setting = null;
     const listProduct = await getProduct();
-    const data = listProduct.data;
+    if (listProduct != undefined) {
+      data = listProduct.data;
+    }
     const resSetting = await getSetting();
-    const setting = resSetting.data.autoSyncProduct;
+    if (resSetting != undefined) {
+      setting = resSetting.data.autoSyncProduct;
+    }
     return { data, setting, pathname };
   }
   componentDidUpdate() {
