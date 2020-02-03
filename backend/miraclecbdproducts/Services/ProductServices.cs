@@ -38,6 +38,7 @@ namespace MiraclecBDProducts.Services
                     long miraclesID = product.Id.Value;
                     var item = db.MappingOrder.FirstOrDefault(o => o.MiraclesId == miraclesID);
                     var shopifyProduct = new Product();
+                    
                     if (item != null)
                     {
                         shopifyProduct = await service.UpdateAsync(item.ShopifyId, product);
@@ -75,5 +76,6 @@ namespace MiraclecBDProducts.Services
             }
             return rs;
         }
+       
     }
 }
